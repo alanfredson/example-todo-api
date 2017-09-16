@@ -14,6 +14,17 @@ node('php'){
         // sh 'php artisan route:cache'
     }
     
+    stage('config'){
+        parallel(
+            'config cache':{
+                sh 'php artisan config:cache'
+            },
+            'config route':{
+                sh 'php artisan route:cache'
+            }
+        )
+    }
+    
     stage('Docker Build') {
         sh 'docker build -t alan1978/todoapi:$BUILD_NUMBER .'
     }
